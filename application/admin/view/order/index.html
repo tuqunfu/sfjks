@@ -1,0 +1,37 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th style="width: 30px;">ID</th>
+					<th>订单号</th>
+					<th>用户</th>
+					<th>金额</th>
+					<th>订单状态</th>
+					<th>创建时间</th>
+					<th>支付状态</th>
+					<th>支付时间</th>
+					<th>订单描述</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="order_list" item="vo"}
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.order_no}</td>
+					<td>{$vo.user_name}</td>
+					<td>{$vo.amount}</td>
+					<td>{php}echo $vo['status']==1 ? '已完成' : '未完成';{/php}</td>
+					<td>{$vo.create_time|date='Y-m-d H:i:s'}</td>
+					<td>{php}echo $vo['pay_status']==1 ? '已支付' : '未支付';{/php}</td>
+					<td>{$vo.pay_time|date='Y-m-d H:i:s'}</td>
+					<td>{$vo.order_desc}</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{/block}

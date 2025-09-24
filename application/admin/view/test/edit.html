@@ -1,0 +1,79 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th>渠道名称</th>
+					<th>分组</th>
+					<th>规则</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="channel_list" item="vo"}
+				<tr>
+					<td>{$vo.outname}</td>
+					<td>{$vo.group_name}</td>
+					<td>{$vo.rulename}</td>
+					<td class="op">
+						{if condition="$vo.is_select==1"}
+							<a  url="{:url('admin/Test/update')}" channel_id="{$vo['id']}" project_id="{$project_id}"  href="javascript:void(0)" class="layui-btn edit layui-btn-normal ">正在启用</a>
+						{else/}
+							<a  url="{:url('admin/Test/update')}" channel_id="{$vo['id']}" project_id="{$project_id}"  href="javascript:void(0)" class="layui-btn edit layui-btn-normal ">启用</a>
+						{/if}
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+			<!--分页-->
+			{$channel_list->render()|raw}
+		</div>
+	</div>
+{/block}
+{block name="script"}
+<script>
+	$(".edit").on("click",function(){
+		var data = {};
+		data.id = $(this).attr('channel_id');
+		data.project_id = $(this).attr('project_id');
+		var url = $(this).attr('url');
+		var index=layer.open({
+			type: 1
+			,title: "系统提示" //不显示标题栏
+			,closeBtn: false
+			,area: '300px;'
+			,shade: 0.5
+			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			,btn: ['确定', '取消']
+			,btnAlign: 'c'
+			,moveType: 1 //拖拽模式，0或者1
+			,content: '<div style="padding: 10px; line-height: 22px; color: #333; font-weight: 300;">设为测试渠道</div>'
+			,yes: function(index, layero){
+				layer.close(index);
+				var load = layer.msg('正在提交请稍候...', {icon: 16,time: 1000,shade : [0.5 , '#000' , true]});
+				$.ajax({
+					url:url,
+					data : data,
+					type:"Post",
+					dataType:"json",
+					success:function(ret){
+						layer.close(load);
+						layer.msg(ret.msg,{icon:ret.code>0?1:2,time: 2000},function(){
+							location.href = "{:url('admin/Test/index')}";
+						});	
+					},
+					error:function(err){
+						layer.close(load);
+						layer.msg('提交失败！',{icon: 2,time: 2000}); 						
+					}
+				});
+			},
+			cancel:function(){
+			},
+		});
+	});
+</script>
+{/block}

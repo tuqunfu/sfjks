@@ -1,0 +1,110 @@
+{extend name="base" /}
+{block name="css"}
+	<style>
+		body{background-image: url(/public/static/images/bg.jpg);width: 100%;height: 100%;background-size: 100%;background-repeat: no-repeat;}
+		.aui-content-padded{margin-top:65%;text-align: -webkit-center;}
+		.layui-layer-title{padding: 0px 150px 0 20px !important;}
+		.layui-layer-page .layui-layer-content{overflow: inherit!important;}
+		.layui-layer-btn a{color:#fff!important;}
+		.layui-layer-page .layui-layer-btn a{background-color: #06cfb8!important;border:1px solid #06cfb8!important;width:40%;height:1.8rem !important; line-height:1.8rem !important; display:inline-block}
+		.layui-layer-page .layui-btn{height:1.8rem;line-height:1.8rem;padding: 0 28px;background-color: #06cfb8;border:1px solid  #06cfb8;color:#fff;}
+		.aui-input, input[type="text"], input[type="password"], input[type="search"], input[type="email"], input[type="tel"], input[type="url"], input[type="date"], input[type="datetime-local"], input[type="time"], input[type="number"], select, textarea{height:1.8rem;line-height:1.8rem;}
+		.layui-layer-page .layui-layer-ico {background-size: 111px!important;background-position-x: -32px!important;}
+		.aui-btn-block{display: block;height: 4.5rem;line-height: 4.55rem;margin-bottom: 0;font-size: 0.9rem;border-radius: 50%;width: 4.5rem;text-align: center;}
+	</style>
+{/block}
+{block name="body"}
+	<div class="aui-content-padded">
+		<div class="aui-btn aui-btn-danger aui-btn-block">核按钮</div>
+	</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+$('.aui-btn').on('click',function(){
+	var index=layer.open({
+		type: 1
+		,title: "系统提示"
+		,closeBtn: false
+		,area: 'auto'
+		,shade: 0.5
+		,id: 'LAY_layuipro' 
+		,btn: ['确定','取消']
+		,btnAlign: 'c'
+		,moveType: 0
+		,content: '<p style="text-align:center;color:red">第一次是否启动核按钮！</p>'
+		,yes: function(index, layero){
+			layer.close(index);
+			var index2=layer.open({
+				type: 1
+				,title: "系统提示"
+				,closeBtn: false
+				,area: 'auto'
+				,shade: 0.5
+				,id: 'LAY_layuipro_1' 
+				,btn: ['确定','取消']
+				,btnAlign: 'c'
+				,moveType: 0
+				,content: '<p style="text-align:center;color:red">第二次是否启动核按钮！</p>'
+				,yes: function(index2, layero2){
+					layer.close(index2);
+					var index3=layer.open({
+						type: 1
+						,title: "系统提示"
+						,closeBtn: false
+						,area: 'auto'
+						,shade: 0.5
+						,id: 'LAY_layuipro_2' 
+						,btn: ['确定','取消']
+						,btnAlign: 'c'
+						,moveType: 0
+						,content: '<p style="text-align:center;color:red;font-weight:bolder">最后一次是否启动核按钮！</p>'
+						,yes: function(index3, layero3){
+							var data = {};
+							var url  = "/index/index/destroy";
+							$.post(url,data,function(ret,state){
+									if(state != "success"){
+										layer.msg('发送请求失败', {
+											time: 500
+										});
+									}else{
+										var re =  JSON.parse(ret);
+										if(re.status == 0){
+											layer.close(index3);
+											layer.msg(re.msg, {
+												time: 1500
+											});
+										}else if(re.status == 1){
+											layer.close(index3);
+											layer.msg(re.msg, {
+												time: 1500
+											});
+										}else{
+											layer.msg('发送请求失败', {
+												time: 1000
+											});
+										}
+									}
+									return false;
+								}
+							);
+							
+						},
+						cancel:function(){
+							layer.close(index3);
+						},
+					});
+				},
+				cancel:function(){
+					layer.close(index2);
+				},
+			});
+			
+		},
+		cancel:function(){
+			layer.close(index);
+		},
+	});
+});
+</script>
+{/block}

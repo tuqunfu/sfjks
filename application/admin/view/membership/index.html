@@ -1,0 +1,45 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th style="width: 30px;">ID</th>
+					<th>会员名称</th>
+					<th>会员价格</th>
+					<th>会员天数</th>
+					<th>会员排序</th>
+					<th>会员描述</th>
+					<th>状态</th>
+					<th>创建时间</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="membership_plan_list" item="vo"}
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.name}</td>
+					<td>{$vo.price}（元）</td>
+					<td>{$vo.duration_days}</td>
+					<td>{$vo.sort_order}</td>
+					<td>{$vo.description}</td>
+					<td>{php}echo $vo['is_active']==1 ? '启用' : '禁用';{/php}</td>
+					<td>{$vo.created_at|date='Y-m-d H:i:s'}</td>
+					<td>
+						{if condition=" $auth->check('admin/membership/edit') ==1"}
+							<a href="{:url('admin/membership/edit',['id'=>$vo['id']])}" class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
+						{/if}
+						
+						{if condition=" $auth->check('admin/membership/delete') ==1"}
+							<a href="{:url('admin/membership/delete',['id'=>$vo['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+						{/if}
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{/block}

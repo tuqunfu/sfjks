@@ -1,0 +1,57 @@
+{extend name="base" /}
+{block name="body"}
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form form-container" action="{:url('admin/membership/save')}" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color: red;">*</span>会员名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" value="" required lay-verify="required" placeholder="请输入会员名称" class="layui-input">
+                    </div>
+                </div>
+
+				<div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color: red;">*</span>会员价格</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="price" value="" required lay-verify="required" placeholder="请输入会员价格" class="layui-input">
+                    </div>
+                </div>
+				
+				<div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color: red;">*</span>会员天数</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="duration_days" value="" required lay-verify="required" placeholder="请输入会员天数" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">会员描述</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="description" value="" required lay-verify="required" placeholder="请输入会员描述" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color: red;">*</span> 会员排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sort_order" value="" required lay-verify="required" placeholder="请输入会员排序" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color: red;">*</span> 状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_active" value="1" title="启用" checked="checked">
+                        <input type="radio" name="is_active" value="0" title="禁用">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="*">保存</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{/block}
+{block name="script"}
+{/block}

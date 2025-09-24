@@ -1,0 +1,72 @@
+{extend name="base" /}
+{block name="body"}
+
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+                <form class="layui-form layui-form-pane" action="{:url('admin/system_log/index')}" method="get">
+					<div class="layui-inline">
+                    <label class="layui-form-label">操作类型</label>
+                    <div class="layui-input-inline">
+                        <select name="cid">
+                            <option value="0">全部</option>
+							<option value="3" {if condition="$cid==3"} selected="selected"{/if}>其他操作</option>
+                        </select>
+						</div>
+					</div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" value="{$keyword}" placeholder="请输入备注关键词" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">搜索</button>
+                    </div>
+                </form>
+                <hr>
+
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        <th>操作人ID</th>
+						<th>操作类型</th>
+                        <th>IP地址</th>
+						<th>操作模块</th>
+						<th>操作方法</th>
+						<th>备注</th>
+						<th>创建时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name="user_list" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.admin_id}</td>
+                        <td>{if condition="$vo['type_id'] eq 1"}
+							积分操作
+							{elseif condition="$vo['type_id'] eq 2"/}
+							登录操作
+							{elseif condition="$vo['type_id'] eq 3"/}
+							其他操作
+							{/if}</td>
+						<td>{$vo.ip}
+						</td>
+						<td>{$vo.module}
+						</td>
+						<td>{$vo.method}
+						</td>
+						<td>{$vo.record}
+						</td>
+                        <td>{$vo.c_time|date='Y-m-d H:i'}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页-->
+                {$user_list->render()|raw}
+            </div>
+        </div>
+ 
+{/block}

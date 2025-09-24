@@ -1,0 +1,33 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th style="width: 30px;">ID</th>
+					<th>用户名称</th>
+					<th>会员名称</th>
+					<th>会员状态</th>
+					<th>开始时间</th>
+					<th>结束时间</th>
+					<th>创建时间</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="user_membership_list" item="vo"}
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.user_name}</td>
+					<td>{$vo.plan_name}</td>
+					<td>{php}echo $vo['status']==1 ? '有效' : '过期';{/php}</td>
+					<td>{$vo.start_time|date='Y-m-d H:i:s'}</td>
+					<td>{$vo.end_time|date='Y-m-d H:i:s'}</td>
+					<td>{$vo.created_at|date='Y-m-d H:i:s'}</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{/block}

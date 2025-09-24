@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>{$siteinfo.seo_title}</title>
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<meta http-equiv="Cache-Control" content="no-transform" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="description" content="{$siteinfo.seo_keyword}">
+	<meta name="Keywords" content="{$siteinfo.seo_description}">
+	
+	<link rel="stylesheet" href="__CSS__/aui/aui.css">
+	<link rel="stylesheet" href="__CSS__/aui/aui-flex.css">
+	<link rel="stylesheet" href="__CSS__/aui/aui-pull-refresh.css">
+	<link rel="stylesheet" href="__CSS__/iconfont.css">
+	<link rel="stylesheet" href="__CSS__/font-awesome.min.css">
+	<link rel="stylesheet" href="__JS__/layui/css/layui.css" media="all">
+	{block name="css"}
+	{/block}
+</head>
+<body>
+	{if condition="$template.show_header"}
+	<header class="aui-bar aui-bar-nav" style="position: fixed;">
+		<div class="lui-head-inside">
+			<div class="aui-title">{$template.title}</div>
+		</div>
+	</header>
+	{/if}
+	{block name="body"}{/block}
+</body>
+
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/aui/aui-tab.js"></script>
+<script src="__JS__/aui/aui-range.js"></script>
+<script src="__JS__/aui/aui-pull-refresh.js"></script>
+<script src="__JS__/aui/aui-toast.js"></script>
+<script src="__JS__/layui/lay/dest/layui.all.js"></script>
+{block name="js"}{/block}
+{block name="script"}{/block}
+{$siteinfo.site_tongji}
+<script type="text/javascript">
+</script>
+</html>

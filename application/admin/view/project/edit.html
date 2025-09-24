@@ -1,0 +1,507 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<form class="layui-form form-container" action="{:url('admin/project/update')}" method="post">
+				<div class="layui-form-item">
+					<label class="layui-form-label">包名</label>
+					<div class="layui-input-block">
+						<input type="text" name="pkgname" value="{$project.pkgname}" required  lay-verify="required" placeholder="请输入包名" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="name" value="{$project.name}" required lay-verify="required" placeholder="请输入名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">跑量模式</label>
+					<div class="layui-input-block">
+						<input type="radio" name="runtype"  lay-filter="runtype" value="1" {if condition=" $project.runtype==1 "} checked="checked" {/if}  title="新增"   class="layui-input">
+						<input type="radio" name="runtype"  lay-filter="runtype" value="2" {if condition=" $project.runtype==2 "} checked="checked" {/if}   title="留存"   class="layui-input">
+						<input type="radio" name="runtype"  lay-filter="runtype" value="3" {if condition=" $project.runtype==3 "} checked="checked" {/if}  title="无人值守"   class="layui-input">
+						<input type="radio" name="runtype" lay-filter="runtype" value="4"  {if condition=" $project.runtype==4 "} checked="checked"  {/if} title="日间模式"   class="layui-input">
+						<input style="   {if condition=" $project['runtype']<4 "} display:none; {/if}  {if condition=" $project['runtype']==4 "} display:inline-block; {/if} width:150px;"  type="number" id="activetime" name="activetime" value="{$project.activetime}"   placeholder="激活开始时间" class="layui-input">
+						<input style="   {if condition=" $project['runtype']<4 "} display:none; {/if}  {if condition=" $project['runtype']==4 "} display:inline-block; {/if} width:150px;"  type="number" id="retainedtime" name="retainedtime" value="{$project.retainedtime}"   placeholder="留存开始时间" class="layui-input">
+					</div>
+					
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">新增上限</label>
+					<div class="layui-input-block">
+						<input type="number" name="newmax" value="{$project.newmax}" required lay-verify="required" placeholder="请输入新增上限（个）" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存上限</label>
+					<div class="layui-input-block">
+						<input type="number" name="oldmaxpersent" value="{$project.oldmaxpersent}" required lay-verify="required" placeholder="请输入留存上限（%）" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存下限</label>
+					<div class="layui-input-block">
+						<input type="number" name="oldminpersent" value="{$project.oldminpersent}" required lay-verify="required" placeholder="请输入留存下限（%）" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存天数</label>
+					<div class="layui-input-block">
+						<input type="number" name="olddays" value="{$project.olddays}" required lay-verify="required" placeholder="请输入留存天数（天）" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存系数</label>
+					<div class="layui-input-block">
+						<input style="width:169px;display:inline-block"  type="text" id="startday"  name="startday"  value="{$project.startday}"  placeholder="开始天数" class="layui-input">
+						<input style="width:169px;display:inline-block"  type="text" id="endday" 	name="endday"    value="{$project.endday}"  placeholder="结束天数" class="layui-input">
+						<input style="width:169px;display:inline-block"  type="text" id="startper"  name="startper"  value="{$project.startper}"  placeholder="开始系数" class="layui-input">
+						<input style="width:169px;display:inline-block"  type="text" id="endper"    name="endper"    value="{$project.endper}"  placeholder="结束系数" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存比</label>
+					<div class="layui-input-block">
+						<table class="layui-table">
+						  <colgroup>
+							<col width="33%">
+							<col width="33%">
+							<col width="33%">
+						  </colgroup>
+						  <thead>
+							<tr>
+							  <th>留存天数</th>
+							  <th>留存比</th>
+							  <th>
+								操作
+								<a href="JavaScript:void(0)" id="pluspresent">
+									<image style="width:18px;float:right;" src='__IMAGES__/plus.png'>
+								</a>
+							  </th>
+							</tr> 
+						  </thead>
+						  <tbody id="datapresent">
+							{foreach name="project.presents" item="vo" key="k" }
+								<tr class="item">
+								  <td>
+									<input type="text" name="time[]" value="{$vo.time}"    placeholder="请输入留存天数" autocomplete="off" class="layui-input" >
+								  </td>
+								  <td>
+									<input type="text" name="present[]" value="{$vo.present}"   placeholder="请输入留存比" autocomplete="off" class="layui-input" >
+								  </td>
+								  <td>
+									<a class="delete present"  href="JavaScript:void(0)">删除</a>
+								  </td>
+								</tr>
+							{/foreach}
+						  </tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">唤醒占比</label>
+					<div class="layui-input-block">
+						<table class="layui-table">
+						  <colgroup>
+							<col width="25%">
+							<col width="25%">
+							<col width="25%">
+							<col width="25%">
+						  </colgroup>
+						  <thead>
+							<tr>
+							  <th>开始天数</th>
+							  <th>结束天数</th>
+							  <th>占比</th>
+							  <th>
+								操作
+								<a href="JavaScript:void(0)" id="awaken_pluspresent">
+									<image style="width:18px;float:right;" src='__IMAGES__/plus.png'>
+								</a>
+							  </th>
+							</tr> 
+						  </thead>
+						  <tbody id="awaken_datapresent">
+							{foreach name="project.awaken_day_ratio" item="vo" key="k" }
+								<tr class="item">
+								  <td>
+									<input   type="text"   name="awaken_starttime[]"  value="{$vo.awaken_starttime}"  placeholder="请输入开始天数" autocomplete="off" class="layui-input" >
+								  </td>
+								  <td>
+									<input   type="text"   name="awaken_endtime[]"  value="{$vo.awaken_endtime}"  placeholder="请输入结束天数" autocomplete="off" class="layui-input" >
+								  </td>
+								  <td>
+									<input type="text" name="awaken_present[]"  value="{$vo.awaken_present}"  placeholder="请输入唤醒率" autocomplete="off" class="layui-input">
+								  </td>
+								  <td>
+									<a class="delete awaken_present"  href="JavaScript:void(0)">
+										删除
+									</a>
+								  </td>
+								</tr>
+							{/foreach}
+						  </tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">VPN</label>
+					<div class="layui-input-block">
+						<input type="radio" name="usevpn" value="1"  {if condition=" $project.usevpn==1 "} checked="checked" {/if}  title="启用"   class="layui-input">
+						<input type="radio" name="usevpn" value="0"  {if condition=" $project.usevpn==0 "} checked="checked" {/if}  title="禁用"   class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">日间模式</label>
+					<div class="layui-input-block">
+						<input type="radio" name="daytime" value="1" {if condition=" $project.daytime==1 "} checked="checked" {/if}  title="启用"   class="layui-input">
+						<input type="radio" name="daytime" value="0" {if condition=" $project.daytime==0 "} checked="checked" {/if} title="禁用"   class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否日志</label>
+					<div class="layui-input-block">
+						<input type="radio" name="log_status" value="1"  title="是" {if condition=" $project.log_status==1 "} checked="checked" {/if}  class="layui-input">
+						<input type="radio" name="log_status" value="0"  title="否" {if condition=" $project.log_status==0 "} checked="checked" {/if}   class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">不生成校验位</label>
+					<div class="layui-input-block">
+						<input type="radio" name="check_status" value="1"  title="是" {if condition=" $project.check_status==1 "} checked="checked" {/if}   class="layui-input">
+						<input type="radio" name="check_status" value="0"  title="否" {if condition=" $project.check_status==0 "} checked="checked" {/if} class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存模式</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_balance" value="1"  title="均衡" {if condition=" $project.is_balance==1 "} checked="checked" {/if}   class="layui-input">
+						<input type="radio" name="is_balance" value="2"   title="非均衡" {if condition=" $project.is_balance==2 "} checked="checked" {/if}   class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否改变分辨率</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_use_display" value="0"  title="是" {if condition=" $project.is_use_display==0 "} checked="checked" {/if}  class="layui-input">
+						<input type="radio" name="is_use_display" value="1"  title="否" {if condition=" $project.is_use_display==1 "} checked="checked" {/if}   class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否jni</label>
+					<div class="layui-input-block">
+						<input type="radio" name="isjni" value="1"  title="是" {if condition=" $project.isjni==1 "} checked="checked" {/if}   class="layui-input">
+						<input type="radio" name="isjni" value="0"  title="否" {if condition=" $project.isjni==0 "} checked="checked" {/if}  class="layui-input">
+					</div>
+				</div>
+				
+				{if condition="$group_id==1"}
+				<div class="layui-form-item">
+					<label class="layui-form-label">使用脚本</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_script" value="1" lay-filter="is_script" {if condition=" $project.is_script==1 "} checked="checked" {/if} title="是" class="layui-input">
+						<input type="radio" name="is_script" value="0" lay-filter="is_script" {if condition=" $project.is_script==0 "} checked="checked" {/if} title="否" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">激活脚本时长</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_activtion_time" value="{$project.script_activtion_time}" required lay-verify="required" placeholder="请输入激活脚本时长（秒）" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">激活时长随机</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_random_a_num" value="{$project.script_random_a_num}" required lay-verify="required" placeholder="请输入激活时长随机（秒）" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存脚本时长</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_retained_time" value="{$project.script_retained_time}" required lay-verify="required" placeholder="请输入留存脚本时长（秒）" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存时长随机</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_random_r_num" value="{$project.script_random_r_num}" required lay-verify="required" placeholder="请输入留存时长随机（秒）" class="layui-input">
+					</div>
+				</div>
+			
+				<div class="layui-form-item">
+					<label class="layui-form-label">脚本</label>
+					<div class="layui-input-block">
+						<input type="text" name="scriptfile"   value="{$project.scriptfile}"  class="layui-input upload" autocomplete="off"/>
+						<input type="file"  name="file" id="scriptfile" class="layui-upload-file">
+					</div>
+				</div>
+				
+				{else/}
+				<div class="layui-form-item">
+					<label class="layui-form-label">使用时长脚本</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_script" value="1" lay-filter="is_script" {if condition=" $project.is_script==1 "} checked="checked" {/if} title="是" class="layui-input">
+						<input type="radio" name="is_script" value="0" lay-filter="is_script" {if condition=" $project.is_script==0 "} checked="checked" {/if} title="否" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">激活脚本时长</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_activtion_time" value="{$project.script_activtion_time}" required lay-verify="required" placeholder="请输入激活脚本时长（秒）" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">激活时长随机</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_random_a_num" value="{$project.script_random_a_num}" required lay-verify="required"     placeholder="请输入激活时长随机（秒）" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存脚本时长</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_retained_time" value="{$project.script_retained_time}" required lay-verify="required"   placeholder="请输入留存脚本时长（秒）" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">留存时长随机</label>
+					<div class="layui-input-block">
+						<input type="number" name="script_random_r_num" value="{$project.script_random_r_num}" required lay-verify="required"      placeholder="请输入留存时长随机（秒）" class="layui-input">
+					</div>
+				</div>
+			
+				<div class="layui-form-item">
+					<label class="layui-form-label">脚本</label>
+					<div class="layui-input-block">
+						<input type="text" name="scriptfile"   value="{$project.scriptfile}"  class="layui-input upload" autocomplete="off"/>
+						<input type="file"  name="file" id="scriptfile" class="layui-upload-file">
+					</div>
+				</div>
+				{/if}
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">描述</label>
+					<div class="layui-input-block">
+						<textarea name="desc" class="layui-textarea">{$project.desc}</textarea>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">accessJSON</label>
+					<div class="layui-input-block">
+						<textarea name="accessJSON" id="accessJSON" readonly="readonly" value=""  class="layui-textarea">{$project.accessJSON}</textarea>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">扩展信息</label>
+					<div class="layui-input-block">
+						<textarea name="extension" id="extension" readonly="readonly" value=""  class="layui-textarea">{$project.extension}</textarea>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">补丁版本号</label>
+					<div class="layui-input-block">
+						<input type="number" name="patch_version" value="{$project.patch_version}" required lay-verify="required" placeholder="请输入留存天数" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">最小手机数（个）</label>
+					<div class="layui-input-block">
+						<input type="number" name="mobile_num" value="{$project.mobile_num}" required lay-verify="required" placeholder="请输入最小手机数（个）" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">最大手机数（个）</label>
+					<div class="layui-input-block">
+						<input type="number" name="mobile_max_num" value="{$project.mobile_max_num}" required lay-verify="required" placeholder="请输入最大手机数（个）" class="layui-input">
+					</div>
+				</div>
+				
+				
+				<!--活跃数-->
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否活跃</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_active" value="1"  title="是" {if condition=" $project.is_active==1 "} checked="checked" {/if}  class="layui-input">
+						<input type="radio" name="is_active" value="0"  title="否" {if condition=" $project.is_active==0 "} checked="checked" {/if}  class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">活跃天数</label>
+					<div class="layui-input-block">
+						<input type="number" name="active_day" 	  value="{$project.active_day}" 	required lay-verify="required"    placeholder="请输入活跃次数" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">活跃次数</label>
+					<div class="layui-input-block">
+						<input type="number" name="active_num" 	  value="{$project.active_num}" 	required lay-verify="required"    placeholder="请输入活跃次数" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">活跃率</label>
+					<div class="layui-input-block">
+						<input type="number" name="active_persent" value="{$project.active_persent}" required lay-verify="required" placeholder="请输入活跃率（留存数占比）（%）" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否通话</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_chat" value="1" title="是" {if condition=" $project.is_chat==1 "} checked="checked" {/if}   class="layui-input">
+						<input type="radio" name="is_chat" value="0" title="否" {if condition=" $project.is_chat==0 "} checked="checked" {/if}   class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否短信</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_message" value="1" {if condition=" $project.is_message==1 "} checked="checked" {/if}  title="是" class="layui-input">
+						<input type="radio" name="is_message" value="0" {if condition=" $project.is_message==0 "} checked="checked" {/if}  title="否"  class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">jniwebview</label>
+					<div class="layui-input-block">
+						<input type="radio" name="jniwebview" value="1" {if condition=" $project.jniwebview==1 "} checked="checked" {/if}  title="是" class="layui-input">
+						<input type="radio" name="jniwebview" value="0" {if condition=" $project.jniwebview==0 "} checked="checked" {/if}  title="否" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<input type="hidden" name="id" value="{$project.id}">
+						<button class="layui-btn" lay-submit lay-filter="*">更新</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+{/block}
+{block name="script"}
+<script>
+layui.upload({
+	elem:'#scriptfile'
+	,url: '{$uploadurl}'
+	,title: '上传脚本'
+	,ext: 'lua'
+	,type: 'file'
+	,success: function(res, input){
+		$('input[name="scriptfile').val(res.url);
+	}
+}); 
+	
+form.on('radio(runtype)', function(data){
+	var runtype = $(this).val();
+	if(runtype<4)
+	{
+		$("#activetime").css("display","none");
+	}
+	else
+	{
+		$("#activetime").css("display","inline-block");
+	}
+});
+
+form.on('radio(is_script)', function(data){
+	var is_script = $(this).val();
+	if(is_script==0){
+		$(".script").removeClass('layui-show').addClass('layui-hide');
+		$(".script_file").removeClass('layui-hide').addClass('layui-show');
+	}else{
+		$(".script").removeClass('layui-hide').addClass('layui-show');
+		$(".script_file").removeClass('layui-show').addClass('layui-hide');
+	}
+});
+
+$(document).ready(function(){
+	$('#extension').on('click', function(){
+		offset($(this));
+	});
+	
+	$('#accessJSON').on('click', function(){
+		offsetaccess($(this));
+	});
+});
+	
+
+/*弹出层*/
+function offsetaccess(othis)
+{
+	var html ='<div style="margin:20px;width:650px;">'; 
+	var accessJSON_str = $("#accessJSON").val();
+	
+	var html = '';
+	html+='<div style="margin:20px;"><p style="margin-top:15px;margin-bottom:15px;">[{"pkgName":"","evetType":0,"className":"","operationType":"","findType":"",<br/>"findText":"","operationMsg":"","operationBiginTime":"","operationEndTime":""}]</p><textarea id="data"  style="width:650px;height:200px;"  name="extension" id="extension"    class="layui-textarea">'+accessJSON_str+'</textarea></div>';
+	
+    var type = othis.data('type'),text = othis.text();
+	layer.open({
+		type: 1
+		,offset: type
+		,id: 'layerDemo'+type //防止重复弹出
+		,content: html
+		,btn: '确定'
+		,btnAlign: 'c' //按钮居中
+		,shade: 0 //不显示遮罩
+		,maxWidth :850
+		,yes: function()
+		{
+			var data = $("#data").val();
+			
+			var data = $("#data").val();
+			if(data.length>0)
+			{
+				$("#accessJSON").val(data);
+			}
+			layer.closeAll();
+		}
+	});
+}
+
+$("#pluspresent").on('click',function(){
+	var html  = '<tr class="item" > <td><input type="text" name="time[]" placeholder="请输入留存天数" autocomplete="off" class="layui-input" ></td><td><input type="text" name="present[]" placeholder="请输入占比" autocomplete="off" class="layui-input" ></td><td><a class="delete present" href="JavaScript:void(0)">删除</a></td></tr>';
+	$("#datapresent").append(html);
+	form.render();
+});
+
+$("table").on('click','.present',function(){
+	$(this).parents('tr.item').remove();
+	form.render();
+});
+
+
+$("#awaken_pluspresent").on('click',function(){
+	var html  = '<tr class="item" > <td><input type="text" name="awaken_starttime[]" placeholder="请输入开始天数" autocomplete="off" class="layui-input" ></td><td><input type="text" name="awaken_endtime[]" placeholder="请输入结束天数" autocomplete="off" class="layui-input" ></td><td style="width:100px"><input type="text" name="awaken_present[]" required  lay-verify="required" placeholder="请输入占比" autocomplete="off" class="layui-input"></td><td><a class="delete awaken_present" href="JavaScript:void(0)">删除</a></td></tr>';
+	$("#awaken_datapresent").append(html);
+	form.render();
+});
+
+$("table").on('click','.awaken_present',function(){
+	$(this).parents('tr.item').remove();
+	form.render();
+});
+</script>
+{/block}

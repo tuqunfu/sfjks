@@ -1,0 +1,43 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th style="width: 30px;">ID</th>
+					<th>分类名称</th>
+					<th>字体文件</th>
+					<th>分类排序</th>
+					<th>分类描述</th>
+					<th>状态</th>
+					<th>创建时间</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="font_category_list" item="vo"}
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.name}</td>
+					<td>{$vo.file_path}</td>
+					<td>{$vo.index_sort}</td>
+					<td>{$vo.remark}</td>
+					<td>{php}echo $vo['status']==1 ? '启用' : '禁用';{/php}</td>
+					<td>{$vo.create_time|date='Y-m-d H:i:s'}</td>
+					<td>
+						{if condition=" $auth->check('admin/font_category/edit') ==1"}
+							<a href="{:url('admin/font_category/edit',['id'=>$vo['id']])}" class="layui-btn layui-btn-normal layui-btn-mini">编辑</a>
+						{/if}
+						
+						{if condition=" $auth->check('admin/font_category/delete') ==1"}
+							<a href="{:url('admin/font_category/delete',['id'=>$vo['id']])}" class="layui-btn layui-btn-danger layui-btn-mini ajax-delete">删除</a>
+						{/if}
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{/block}

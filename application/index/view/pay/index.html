@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>alipay_test</title>
+</head>
+<body>
+<form name=alipayment action="{:url('Pay/index')}" method="post" target="_blank">
+	商户订单号：<input type="text" name="out_trade_no" value="{$out_trade_no}" /><br/>
+	订单名称：<input type="text" name="goods_name" value="{$goods_name}"/><br/>
+	付款金额：<input type="text" name="total_amount" /><br/>
+	商品描述：<input type="text" name="goods_body" value="{$goods_body}"/><br/>
+	<button type="submit">付 款</button>
+</form>
+</body>
+</html>

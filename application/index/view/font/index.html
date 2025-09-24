@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>书法教科书</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__CSS__/font-awesome.min.css">
+    <!--CSS引用-->
+    {block name="css"}{/block}
+    <link rel="stylesheet" href="__CSS__/admin.css">
+	  <link rel="stylesheet" href="__CSS__/font.css">
+    <!--[if lt IE 9]>
+    <script src="__CSS__/html5shiv.min.js"></script>
+    <script src="__CSS__/respond.min.js"></script>
+    <![endif]-->
+</head>
+	
+  <body>
+    <ul id="header" class="layui-nav" lay-bar="disabled">
+      <li class="layui-nav-item bg">
+        <a href="javascript:;" class="index_a"><img src="__STATIC__/images/sbg.png" class="index_image"></a>
+      </li>
+      <li class="layui-nav-item user-info nlogin">
+        <a href="javascript:;"><img src="__STATIC__/images/userdefault.png" class="layui-nav-img"></a>
+        <dl class="layui-nav-child">
+          <dd style="text-align: center;"><a href="javascript:;" id="showLogin">登录</a></dd>
+        </dl>
+      </li>
+
+      <li class="layui-nav-item user-info inlogin">
+        <a href="javascript:;"><img src="__STATIC__/images/log.jpg" class="layui-nav-img">
+          <span class="user"></span>
+        </a>
+        <dl class="layui-nav-child">
+          <dd id="chooseMember" style="text-align: center;"><a href="javascript:;">注册会员</a></dd>
+          <dd id="userMember" style="text-align: center;color:chocolate"><i style="font-size: 15px;font-weight:bold" class="layui-icon layui-icon-diamond"></i><span id="membership"></span></dd>
+          <dd id="loginOut" style="text-align: center;"><a href="javascript:;" >退出系统</a></dd>
+        </dl>
+      </li>
+    </ul>
+
+    <div class="layui-container"></div>
+    
+    <div id="content" class="layui-form">
+        <div class="layui-row">
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">内容</label>
+              <div class="layui-input-block" style="margin-left:30px;">
+                <input id="font_content" type="text" name="font_content"  value="南无阿弥陀佛" placeholder="请输入内容" autocomplete="off" class="layui-input">
+                <!-- 弹出的 textarea，初始隐藏 -->
+                <div id="textareaPopup" style="display: none;position:absolute; z-index: 100;top:0px;background-color:#7d7d7d">
+                  <textarea id="detailTextarea" placeholder="请输入文本内容..." class="layui-textarea" rows="8">南无阿弥陀佛</textarea>
+                  <!-- 底部备注（灰色小字） -->
+                  <div class="layui-form-mid layui-word-aux">
+                    <span>备注:换行输入，则换行显示</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">字体</label>
+              <div class="layui-input-block" style="margin-left: 50px;">
+                <select id="font_category" name="font_category" lay-filter="font_category">
+                  {foreach name="font_category_list" item="vo"}
+                    <option value="{$vo.id}">{$vo.name}</option>
+                  {/foreach}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">首选</label>
+              <div class="layui-input-block" style="margin-left: 40px;">
+                <select name="font_type" id="font_type" lay-filter="font_type">
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">排版</label>
+              <div class="layui-input-block" style="margin-left: 40px;">
+                <select id="font_show" name="font_show" lay-filter="font_show">
+                  <option value=""></option>
+                  <option value="横排">横排</option>
+                  <option value="竖排">竖排</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 60px;">每行字数</label>
+              <div class="layui-input-block" style="margin-left: 65px;">
+                <select id="font_number" name="font_number" lay-filter="font_number">
+                  <option value=""></option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">字号</label>
+              <div class="layui-input-block" style="margin-left: 40px;">
+                <select id="font_size" name="font_size" lay-filter="font_size">
+                  <option value=""></option>
+                  <option value="24">24</option>
+                  <option value="32">32</option>
+                  <option value="48">48</option>
+                  <option value="64">64</option>
+                  <option value="96">96</option>
+                  <option value="128">128</option>
+                  <option value="160">160</option>
+                  <option value="192">192</option>
+                  <option value="256">256</option>
+                  <option value="384">384</option>
+                  <option value="512">512</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">字距</label>
+              <div class="layui-input-block" style="margin-left: 40px;">
+                <select id="font_margin" name="font_margin" lay-filter="font_margin">
+                  <option value=""></option>
+                  <option value="0">0</option>
+                  <option value="16">16</option>
+                  <option value="32">24</option>
+                  <option value="48">32</option>
+                  <option value="64">48</option>
+                  <option value="96">64</option>
+                  <option value="128">96</option>
+                  <option value="160">128</option>
+                  <option value="192">192</option>
+                  <option value="256">256</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">行距</label>
+              <div class="layui-input-block" style="margin-left: 50px;">
+                <select id="row_margin" name="row_margin" lay-filter="row_margin">
+                  <option value=""></option>
+                  <option value="0">0</option>
+                  <option value="16">16</option>
+                  <option value="32">32</option>
+                  <option value="48">48</option>
+                  <option value="64">64</option>
+                  <option value="96">96</option>
+                  <option value="128">128</option>
+                  <option value="160">160</option>
+                  <option value="192">192</option>
+                  <option value="256">256</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 60px;">水平边距</label>
+              <div class="layui-input-block" style="margin-left: 65px;">
+                <select id="text_margin" name="text_margin" lay-filter="text_margin">
+                  <option value=""></option>
+                  <option value="0">0</option>
+                  <option value="16">16</option>
+                  <option value="32">24</option>
+                  <option value="48">32</option>
+                  <option value="64">48</option>
+                  <option value="96">64</option>
+                  <option value="128">96</option>
+                  <option value="160">128</option>
+                  <option value="192">192</option>
+                  <option value="256">256</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 60px;">垂直边距</label>
+              <div class="layui-input-block" style="margin-left: 65px;">
+                <select id="v_margin" name="v_margin" lay-filter="v_margin">
+                  <option value=""></option>
+                  <option value="0">0</option>
+                  <option value="16">16</option>
+                  <option value="32">24</option>
+                  <option value="48">32</option>
+                  <option value="64">48</option>
+                  <option value="96">64</option>
+                  <option value="128">96</option>
+                  <option value="160">128</option>
+                  <option value="192">192</option>
+                  <option value="256">256</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">字色</label>
+              <div class="layui-input-block" style="margin-left: 50px;">
+                <div class="layui-input-inline" style="width: 80px;">
+                  <input type="text" name="font_color" value="" placeholder="选择颜色" class="layui-input" id="font_color_input">
+                </div>
+                <div class="layui-inline" style="left: 87px;position: absolute;top: -8px;">
+                   <div id="font_color"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">背景</label>
+              <div class="layui-input-block" style="margin-left: 50px;">
+                <div class="layui-input-inline" style="width: 80px;">
+                  <input type="text" name="back_color" value="" placeholder="选择颜色" class="layui-input" id="back_color_input">
+                </div>
+                <div class="layui-inline" style="left: 87px;position: absolute;top: -8px;">
+                   <div id="back_color"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">样式</label>
+              <div class="layui-input-block" style="margin-left: 50px;">
+                <select id="paper_type" name="paper_type" lay-filter="paper_type">
+                  <option value=""></option>
+                  <option value="朱砂">朱砂</option>
+                  <option value="宣纸">宣纸</option>
+                  <option value="法书">法书</option>
+                  <option value="拓片">拓片</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md2">
+            <div class="layui-form-item">
+              <label class="layui-form-label" style="width: 30px;">格子</label>
+              <div class="layui-input-block" style="margin-left: 50px;">
+                <select id="font_back" name="font_back" lay-filter="font_back">
+                  <option value=""></option>
+                  <option value="0">米字格</option>
+                  <option value="1">九宫格</option>
+                  <option value="2">田字格</option>
+                  <option value="3">口字格</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-col-md3">
+              <button class="layui-btn" lay-submit id="create_font" lay-filter="formDemo">书法生成</button>
+              <button class="layui-btn saveFont">保存图片<i class="layui-icon layui-icon-down layui-font-12"></i></button>
+              <button class="layui-btn layui-btn-primary resetFont" id="reset_font" type="reset">清空历史</button>
+          </div>
+      </div>
+  </div>
+	<div id="shufa">
+      <div id="font-content">
+        <table id="shufa-font" cellspacing="0" cellpadding="0" align="center">
+          <tr>
+            <td id="shufa-img" align="left">
+            </td>
+          </tr>
+        </table>
+      </div>
+    </table>
+  </div>
+</body>
+
+<script>
+  // 定义全局JS变量
+  var GV = {
+      current_controller: "admin/{$controller|default=''}/",
+      base_url: "__STATIC__",
+      font_url: "http://127.0.0.1/public/fonts/maozedong-1.ttf",
+      file_url: "http://127.0.0.1/public",
+      font_content: "南无阿弥陀佛",
+      font_back_data: {}
+  }
+</script>
+
+<!-- 登录表单（隐藏） -->
+<script type="text/html" id="loginTpl">
+  <form  class="layui-form login_register" style="padding: 20px;" onsubmit="return false;">
+    <h3>用户登录</h3>
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required">*</span>用           户</label>
+      <div class="layui-input-block">
+        <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名或手机号" class="layui-input">
+      </div>
+    </div>
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required">*</span>密          码</label>
+      <div class="layui-input-block">
+        <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <button class="layui-btn layui-btn-fluid ulogin" lay-submit lay-filter="login">登录</button>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-block" style="text-align: right;">
+        <a href="javascript:;" class="switch-to-register">没有账号？去注册</a>
+      </div>
+    </div>
+  </form>
+</script>
+
+<!-- 注册表单（隐藏） -->
+<script type="text/html" id="registerTpl">
+  <form class="layui-form login_register" style="padding: 20px;" onsubmit="return false;">
+    <h3>用户注册</h3>
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required">*</span>用户名</label>
+      <div class="layui-input-block">
+        <input type="text" name="reg_username" required lay-verify="required" placeholder="请输入用户名" class="layui-input">
+      </div>
+    </div>
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required">*</span>手机号</label>
+      <div class="layui-input-block">
+        <input type="text" name="mobile" required lay-verify="mobile" placeholder="请输入手机号" class="layui-input">
+      </div>
+    </div>
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required">*</span>密码</label>
+      <div class="layui-input-block">
+        <input type="password" name="reg_password" required lay-verify="required" placeholder="请输入密码" class="layui-input">
+      </div>
+    </div>
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required">*</span>确认密码</label>
+      <div class="layui-input-block">
+        <input type="password" name="confirm" required lay-verify="required" placeholder="请再次输入密码" class="layui-input">
+      </div>
+    </div>
+    
+    <div class="layui-form-item">
+      <button class="layui-btn layui-btn-fluid register" lay-submit lay-filter="register">注册</button>
+    </div>
+    
+    <div class="layui-form-item">
+      <div class="layui-input-block" style="text-align: right;">
+        <a href="javascript:;" class="switch-to-login">已有账号？去登录</a>
+      </div>
+    </div>
+  </form>
+</script>
+
+<!--JS引用-->
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/layui/layui.js"></script>
+<script src="__JS__/admin.js"></script>
+<script src="__JS__/report.js"></script>
+<script src="__JS__/opentype.min.js"></script>
+<script src="__JS__/html2pdf.bundle.min.js"></script>
+<script src="__JS__/html2canvas.min.js"></script>
+<script src="__JS__/FileSaver.min.js"></script>
+<script src="__JS__/jszip.min.js"></script>
+<script src="__JS__/src/core.js"></script>
+<script src="__JS__/src/CryptoJS.js"></script>
+<script src="__JS__/qiniuyun.js"></script>
+<script src="__JS__/font.backimage.js"></script>
+<script src="__JS__/font.download.js"></script>
+<script src="__JS__/font.js"></script>
+<script src="__JS__/font.login.js"></script>
+<script src="__JS__/vip.js"></script>
+{block name="js"}{/block}
+<!--页面JS脚本-->
+{block name="script"}
+<script>
+  GV.font_categroy_list = {$font_category_list|json_encode|raw};
+</script>
+{/block}
+</body>
+</html>

@@ -1,0 +1,54 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<form class="layui-form layui-form-pane" action="{:url('admin/Test/index')}" method="get">
+				<div class="layui-inline">
+					<label class="layui-form-label">包名</label>
+					<div class="layui-input-inline">
+						<input type="text" name="pkgname" value="{$pkgname}" placeholder="请输入包名称/包名" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<button class="layui-btn">搜索</button>
+				</div>
+			</form>
+			
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th>包名称</th>
+					<th>包名</th>
+					<th>测试渠道名称</th>
+					<th>规则</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="project_list" item="vo"}
+				<tr>
+					<td>{$vo.name}</td>
+					<td>{$vo.pkgname}</td>
+					<td>{if condition="$vo.outname"}{$vo.outname}{else/}暂无{/if}</td>
+					<td>{if condition="$vo.rulename"}{$vo.rulename}{else/}暂无{/if}</td>
+					<td class="op">
+						{if condition=" $auth->check('admin/Test/edit') ==1"}
+							<a  href="{:url('admin/Test/edit',['project_id'=>$vo['id']])}" class="layui-btn layui-btn-normal">编辑</a>
+						{/if}
+						
+						{if condition="$vo.outname"}
+							<a  href="/admin/common_channel/edit?id={$vo.channel_id}" class="layui-btn layui-btn-normal">查看</a>
+						{/if}
+						
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+			<!--分页-->
+			{$project_list->render()|raw}
+		</div>
+	</div>
+{/block}
+{block name="script"}
+{/block}

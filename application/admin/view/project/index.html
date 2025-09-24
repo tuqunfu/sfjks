@@ -1,0 +1,74 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<form class="layui-form layui-form-pane" action="{:url('admin/project/index')}" method="get">
+				<div class="layui-inline">
+					<label class="layui-form-label">包名</label>
+					<div class="layui-input-inline">
+						<input type="text" name="pkgname" value="{$pkgname}" placeholder="请输入包名/包名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<button class="layui-btn">搜索</button>
+				</div>
+				
+				<div class="layui-inline">
+					<button type="reset" class="layui-btn">重置</button>
+				</div>
+			</form>
+			
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th style="width: 30px;">ID</th>
+					<th>包名</th>
+					<th>名称</th>
+					<th>跑量模式(激活/留存)</th>
+					<th>新增上限</th>
+					<th>留存上限（%）</th>
+					<th>留存下限（%）</th>
+					<th>留存天数</th>
+					<th>使用无极</th>
+					<th>日渐模式</th>
+					<th>脚本</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="project_list" item="vo"}
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.pkgname}</td>
+					<td>{$vo.name}</td>
+					<td>
+						{if condition=" $vo.runtype==1 "}新增{/if}
+						{if condition=" $vo.runtype==2 "}留存{/if}
+						{if condition=" $vo.runtype==3 "}无人值守{/if}
+						{if condition=" $vo.runtype==4 "}日间模式({$vo.activetime}时/{$vo.retainedtime}时){/if}
+					</td>
+					<td>{$vo.newmax}</td>
+					<td>{$vo.oldmaxpersent}</td>
+					<td>{$vo.oldminpersent}</td>
+					<td>{$vo.olddays}</td>
+					<td>{$vo.usevpn ?  '是':'否'}</td>
+					<td>{$vo.daytime ? '是':'否'}</td>
+					<td>{php}echo (!empty($vo['scriptfile'])) ? '有':'无'{/php}</td>
+					<td class="op">
+						{if condition=" $auth->check('admin/Project/edit') ==1"}
+							<a href="{:url('admin/project/edit',['id'=>$vo['id']])}" class="layui-btn layui-btn-normal">编辑</a>
+						{/if}
+						
+						{if condition=" $auth->check('admin/Project/delete') ==1"}
+							<a href="{:url('admin/project/delete',['id'=>$vo['id']])}" class="layui-btn layui-btn-danger ajax-delete ajax-delete">删除</a>
+						{/if}
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+			<!--分页-->
+			{$project_list->render()|raw}
+		</div>
+	</div>
+{/block}

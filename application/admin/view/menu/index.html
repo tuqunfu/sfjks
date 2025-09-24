@@ -1,0 +1,43 @@
+{extend name="base" /}
+{block name="body"}
+	<div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			<table class="layui-table">
+				<thead>
+				<tr>
+					<th style="width: 30px;">ID</th>
+					<th>菜单名称</th>
+					<th>控制器方法</th>
+					<th>状态</th>
+					<th style="width: 30px;">排序</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach name="admin_menu_level_list" item="vo"}
+				<tr>
+					<td>{$vo.id}</td>
+					<td style="text-align: left;">{neq name="vo.level" value="1"}|{php}for($i=1;$i<$vo['level'];$i++){echo ' ----';}{/php}{/neq} {$vo.title}</td>
+					<td style="text-align: left;">{$vo.name}</td>
+					<td>{php}echo $vo['status']==1 ? '显示' : '隐藏';{/php}</td>
+					<td>{$vo.sort}</td>
+					<td>
+						{if condition=" $auth->check('admin/Menu/add') ==1"}
+							<a href="{:url('admin/menu/add',['pid'=>$vo['id']])}" class="layui-btn">添加子菜单</a>
+						{/if}
+						
+						{if condition=" $auth->check('admin/Menu/edit') ==1"}
+							<a href="{:url('admin/menu/edit',['id'=>$vo['id']])}" class="layui-btn layui-btn-normal">编辑</a>
+						{/if}
+						
+						{if condition=" $auth->check('admin/Menu/delete') ==1"}
+							<a href="{:url('admin/menu/delete',['id'=>$vo['id']])}" class="layui-btn layui-btn-danger ajax-delete">删除</a>
+						{/if}
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{/block}
